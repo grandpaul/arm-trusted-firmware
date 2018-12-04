@@ -88,6 +88,7 @@
 /* FIP placed after ROM to append it to BL1 with very little padding. */
 #define PLAT_RPI3_FIP_BASE		ULL(0x00020000)
 #define PLAT_RPI3_FIP_MAX_SIZE		ULL(0x001E0000)
+#define PLAT_RPI3_FIP_MMC_BASE          (1024 * 1024)
 
 /* We have 16M of memory reserved starting at 256M */
 #define SEC_SRAM_BASE			ULL(0x10000000)

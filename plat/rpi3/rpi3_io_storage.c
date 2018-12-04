@@ -4,6 +4,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#ifndef IMAGE_BL1
+#define USE_FIP_FROM_MMC
+#endif
+
 #include <assert.h>
 #include <string.h>
 
@@ -11,9 +15,15 @@
 
 #include <common/bl_common.h>
 #include <common/debug.h>
+#ifdef USE_FIP_FROM_MMC
+#include <drivers/mmc.h>
+#endif
 #include <drivers/io/io_driver.h>
 #include <drivers/io/io_fip.h>
 #include <drivers/io/io_memmap.h>
+#ifdef USE_FIP_FROM_MMC
+#include <drivers/io/io_block.h>
+#endif
 #include <tools_share/firmware_image_package.h>
 
 /* Semihosting filenames */
@@ -36,13 +46,37 @@
 /* IO devices */
 static const io_dev_connector_t *fip_dev_con;
 static uintptr_t fip_dev_handle;
+#ifndef USE_FIP_FROM_MMC
 static const io_dev_connector_t *memmap_dev_con;
 static uintptr_t memmap_dev_handle;
+#else
+static const io_dev_connector_t *mmc_dev_con;
+static uintptr_t mmc_dev_handle;
+#endif
 
+#ifndef USE_FIP_FROM_MMC
 static const io_block_spec_t fip_block_spec = {
 	.offset = PLAT_RPI3_FIP_BASE,
 	.length = PLAT_RPI3_FIP_MAX_SIZE
 };
+#else
+static const io_block_spec_t mmc_fip_spec = {
+	.offset = PLAT_RPI3_FIP_MMC_BASE,
+        .length = 943104
+};
+
+static const io_block_dev_spec_t mmc_dev_spec = {
+	.buffer         = {
+		.offset = PLAT_RPI3_FIP_BASE,
+		.length = 943104
+	},
+	.ops            = {
+		.read   = mmc_read_blocks,
+		.write  = mmc_write_blocks,
+	},
+	.block_size     = MMC_BLOCK_SIZE
+};
+#endif
 
 static const io_uuid_spec_t bl2_uuid_spec = {
 	.uuid = UUID_TRUSTED_BOOT_FIRMWARE_BL2,
@@ -103,7 +137,11 @@ static const io_uuid_spec_t nt_fw_cert_uuid_spec = {
 #endif /* TRUSTED_BOARD_BOOT */
 
 static int open_fip(const uintptr_t spec);
+#ifndef USE_FIP_FROM_MMC
 static int open_memmap(const uintptr_t spec);
+#else
+static int open_mmc(const uintptr_t spec);
+#endif
 
 struct plat_io_policy {
 	uintptr_t *dev_handle;
@@ -113,11 +151,19 @@ struct plat_io_policy {
 
 /* By default, load images from the FIP */
 static const struct plat_io_policy policies[] = {
+#ifndef USE_FIP_FROM_MMC
 	[FIP_IMAGE_ID] = {
 		&memmap_dev_handle,
 		(uintptr_t)&fip_block_spec,
 		open_memmap
 	},
+#else
+	[FIP_IMAGE_ID] = {
+		&mmc_dev_handle,
+		(uintptr_t)&mmc_fip_spec,
+		open_mmc
+	},
+#endif
 	[BL2_IMAGE_ID] = {
 		&fip_dev_handle,
 		(uintptr_t)&bl2_uuid_spec,
@@ -209,6 +255,7 @@ static int open_fip(const uintptr_t spec)
 	return result;
 }
 
+#ifndef USE_FIP_FROM_MMC
 static int open_memmap(const uintptr_t spec)
 {
 	int result;
@@ -224,6 +271,21 @@ static int open_memmap(const uintptr_t spec)
 	}
 	return result;
 }
+#else
+static int open_mmc(const uintptr_t spec)
+{
+	int result;
+	uintptr_t local_handle;
+
+	result = io_dev_init(mmc_dev_handle, (uintptr_t)NULL);
+	if (result == 0) {
+		result = io_open(mmc_dev_handle, spec, &local_handle);
+		if (result == 0)
+			io_close(local_handle);
+	}
+	return result;
+}
+#endif
 
 void plat_rpi3_io_setup(void)
 {
@@ -231,17 +293,24 @@ void plat_rpi3_io_setup(void)
 
 	io_result = register_io_dev_fip(&fip_dev_con);
 	assert(io_result == 0);
-
+#ifndef USE_FIP_FROM_MMC
 	io_result = register_io_dev_memmap(&memmap_dev_con);
+#else
+	io_result = register_io_dev_block(&mmc_dev_con);
+#endif
 	assert(io_result == 0);
-
 	/* Open connections to devices and cache the handles */
 	io_result = io_dev_open(fip_dev_con, (uintptr_t)NULL,
 				&fip_dev_handle);
 	assert(io_result == 0);
 
+#ifndef USE_FIP_FROM_MMC
 	io_result = io_dev_open(memmap_dev_con, (uintptr_t)NULL,
 				&memmap_dev_handle);
+#else
+	io_result = io_dev_open(mmc_dev_con, (uintptr_t)&mmc_dev_spec,
+				&mmc_dev_handle);
+#endif
 	assert(io_result == 0);
 
 	/* Ignore improbable errors in release builds */
