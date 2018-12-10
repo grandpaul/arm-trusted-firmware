@@ -24,7 +24,7 @@ PLAT_INCLUDES		:=	-Idrivers/imx/uart			\
 				-Iinclude/common/tbbr			\
 				-Iinclude/plat/arm/common/		\
 				-Iplat/imx/common/include/		\
-				-Iplat/imx/imx7/warp7/include		\
+				-Iplat/imx/imx7/picopi/include		\
 				-Idrivers/imx/timer			\
 				-Idrivers/imx/usdhc			\
 				-Iplat/imx/imx7/include
@@ -56,11 +56,11 @@ BL2_SOURCES		+=	common/desc_image_load.c			\
 				plat/imx/common/imx_snvs.c			\
 				plat/imx/common/imx_wdog.c			\
 				plat/imx/common/imx7_clock.c		\
-				plat/imx/imx7/warp7/aarch32/warp7_helpers.S	\
-				plat/imx/imx7/warp7/warp7_bl2_el3_setup.c	\
-				plat/imx/imx7/warp7/warp7_bl2_mem_params_desc.c \
-				plat/imx/imx7/warp7/warp7_io_storage.c		\
-				plat/imx/imx7/warp7/warp7_image_load.c		\
+				plat/imx/imx7/picopi/aarch32/picopi_helpers.S	\
+				plat/imx/imx7/picopi/picopi_bl2_el3_setup.c	\
+				plat/imx/imx7/picopi/picopi_bl2_mem_params_desc.c \
+				plat/imx/imx7/picopi/picopi_io_storage.c		\
+				plat/imx/imx7/picopi/picopi_image_load.c		\
 				${XLAT_TABLES_LIB_SRCS}
 
 ifneq (${TRUSTED_BOARD_BOOT},0)
@@ -75,8 +75,8 @@ AUTH_SOURCES	:=	drivers/auth/auth_mod.c			\
 
 BL2_SOURCES		+=	${AUTH_SOURCES}					\
 				plat/common/tbbr/plat_tbbr.c			\
-				plat/imx/imx7/warp7/warp7_trusted_boot.c	\
-				plat/imx/imx7/warp7/warp7_rotpk.S
+				plat/imx/imx7/picopi/picopi_trusted_boot.c	\
+				plat/imx/imx7/picopi/picopi_rotpk.S
 
 ROT_KEY             = $(BUILD_PLAT)/rot_key.pem
 ROTPK_HASH          = $(BUILD_PLAT)/rotpk_sha256.bin
@@ -84,7 +84,7 @@ ROTPK_HASH          = $(BUILD_PLAT)/rotpk_sha256.bin
 $(eval $(call add_define_val,ROTPK_HASH,'"$(ROTPK_HASH)"'))
 $(eval $(call MAKE_LIB_DIRS))
 
-$(BUILD_PLAT)/bl2/warp7_rotpk.o: $(ROTPK_HASH)
+$(BUILD_PLAT)/bl2/picopi_rotpk.o: $(ROTPK_HASH)
 
 certificates: $(ROT_KEY)
 
@@ -120,9 +120,9 @@ SEPARATE_CODE_AND_RODATA	:= 1
 # Use Coherent memory
 USE_COHERENT_MEM		:= 1
 
-# PLAT_WARP7_UART
-PLAT_WARP7_UART			:=1
-$(eval $(call add_define,PLAT_WARP7_UART))
+# PLAT_PICOPI_UART
+PLAT_PICOPI_UART			:=1
+$(eval $(call add_define,PLAT_PICOPI_UART))
 
 # Add the build options to pack BLx images and kernel device tree
 # in the FIP if the platform requires.
