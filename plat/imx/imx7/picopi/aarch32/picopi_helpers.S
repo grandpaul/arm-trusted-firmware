@@ -35,14 +35,14 @@ func plat_get_my_entrypoint
 endfunc plat_get_my_entrypoint
 
 func plat_crash_console_init
-	mov_imm	r0, PLAT_WARP7_BOOT_UART_BASE
-	mov_imm	r1, PLAT_WARP7_BOOT_UART_CLK_IN_HZ
-	mov_imm	r2, PLAT_WARP7_CONSOLE_BAUDRATE
+	mov_imm	r0, PLAT_PICOPI_BOOT_UART_BASE
+	mov_imm	r1, PLAT_PICOPI_BOOT_UART_CLK_IN_HZ
+	mov_imm	r2, PLAT_PICOPI_CONSOLE_BAUDRATE
 	b	imx_crash_uart_init
 endfunc plat_crash_console_init
 
 func plat_crash_console_putc
-	mov_imm r1, PLAT_WARP7_BOOT_UART_BASE
+	mov_imm r1, PLAT_PICOPI_BOOT_UART_BASE
 	b	imx_crash_uart_putc
 endfunc plat_crash_console_putc
 

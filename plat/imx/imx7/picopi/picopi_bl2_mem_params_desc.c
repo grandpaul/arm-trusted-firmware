@@ -21,8 +21,8 @@ static bl_mem_params_node_t bl2_mem_params_descs[] = {
 		SET_STATIC_PARAM_HEAD(image_info, PARAM_EP, VERSION_2,
 				      image_info_t, 0),
 
-		.image_info.image_base = WARP7_OPTEE_BASE,
-		.image_info.image_max_size = WARP7_OPTEE_SIZE,
+		.image_info.image_base = PICOPI_OPTEE_BASE,
+		.image_info.image_max_size = PICOPI_OPTEE_SIZE,
 
 		.next_handoff_image_id = BL33_IMAGE_ID,
 	},
@@ -32,8 +32,8 @@ static bl_mem_params_node_t bl2_mem_params_descs[] = {
 				      VERSION_2, entry_point_info_t, SECURE | NON_EXECUTABLE),
 		SET_STATIC_PARAM_HEAD(image_info, PARAM_IMAGE_BINARY,
 				      VERSION_2, image_info_t, 0),
-		.image_info.image_base = WARP7_DTB_BASE,
-		.image_info.image_max_size = WARP7_DTB_SIZE,
+		.image_info.image_base = PICOPI_DTB_BASE,
+		.image_info.image_max_size = PICOPI_DTB_SIZE,
 		.next_handoff_image_id = INVALID_IMAGE_ID,
 	},
 	{
@@ -45,8 +45,8 @@ static bl_mem_params_node_t bl2_mem_params_descs[] = {
 
 		SET_STATIC_PARAM_HEAD(image_info, PARAM_EP, VERSION_2,
 				      image_info_t, IMAGE_ATTRIB_SKIP_LOADING),
-		.image_info.image_base = WARP7_OPTEE_BASE,
-		.image_info.image_max_size = WARP7_OPTEE_SIZE,
+		.image_info.image_base = PICOPI_OPTEE_BASE,
+		.image_info.image_max_size = PICOPI_OPTEE_SIZE,
 
 		.next_handoff_image_id = INVALID_IMAGE_ID,
 	},
@@ -79,8 +79,8 @@ static bl_mem_params_node_t bl2_mem_params_descs[] = {
 
 			SET_STATIC_PARAM_HEAD(image_info, PARAM_EP,
 					      VERSION_2, image_info_t, 0),
-			.image_info.image_base = WARP7_UBOOT_BASE,
-			.image_info.image_max_size = WARP7_UBOOT_SIZE,
+			.image_info.image_base = PICOPI_UBOOT_BASE,
+			.image_info.image_max_size = PICOPI_UBOOT_SIZE,
 		# endif /* PRELOADED_BL33_BASE */
 
 		.next_handoff_image_id = INVALID_IMAGE_ID,
