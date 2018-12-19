@@ -138,6 +138,13 @@ void bl2_el3_plat_arch_setup(void)
 #define PICOPI_UART5_TX_MUX \
 	IOMUXC_SW_MUX_CTL_PAD_I2C4_SDA_ALT1_UART5_TX_DATA
 
+#define PICOPI_SD3_FEATURES \
+	(IOMUXC_SW_PAD_CTL_PAD_SD3_PU_47K            | \
+	 IOMUXC_SW_PAD_CTL_PAD_SD3_PE                | \
+	 IOMUXC_SW_PAD_CTL_PAD_SD3_HYS               | \
+	 IOMUXC_SW_PAD_CTL_PAD_SD3_SLEW_SLOW         | \
+	 IOMUXC_SW_PAD_CTL_PAD_SD3_DSE_3_X6)
+
 static void picopi_setup_pinmux(void)
 {
 	/* Configure UART5 TX */
@@ -146,6 +153,43 @@ static void picopi_setup_pinmux(void)
 	/* Configure UART5 RX */
 	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_I2C4_SCL_OFFSET,
 					 PICOPI_UART5_RX_MUX);
+
+	/* Configure USDHC3 */
+	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_SD3_CLK_OFFSET, 0);
+	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_SD3_CMD_OFFSET, 0);
+	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_SD3_DATA0_OFFSET, 0);
+	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_SD3_DATA1_OFFSET, 0);
+	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_SD3_DATA2_OFFSET, 0);
+	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_SD3_DATA3_OFFSET, 0);
+	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_SD3_DATA4_OFFSET, 0);
+	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_SD3_DATA5_OFFSET, 0);
+	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_SD3_DATA6_OFFSET, 0);
+	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_SD3_DATA7_OFFSET, 0);
+	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_GPIO1_IO14_OFFSET,
+					 IOMUXC_SW_MUX_CTL_PAD_GPIO1_IO14_ALT1_SD3_CD_B);
+
+	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_SD3_CLK_OFFSET,
+				     PICOPI_SD3_FEATURES);
+	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_SD3_CMD_OFFSET,
+				     PICOPI_SD3_FEATURES);
+	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_SD3_DATA0_OFFSET,
+				     PICOPI_SD3_FEATURES);
+	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_SD3_DATA1_OFFSET,
+				     PICOPI_SD3_FEATURES);
+	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_SD3_DATA2_OFFSET,
+				     PICOPI_SD3_FEATURES);
+	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_SD3_DATA3_OFFSET,
+				     PICOPI_SD3_FEATURES);
+	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_SD3_DATA4_OFFSET,
+				     PICOPI_SD3_FEATURES);
+	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_SD3_DATA5_OFFSET,
+				     PICOPI_SD3_FEATURES);
+	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_SD3_DATA6_OFFSET,
+				     PICOPI_SD3_FEATURES);
+	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_SD3_DATA7_OFFSET,
+				     PICOPI_SD3_FEATURES);
+	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_GPIO1_IO14_OFFSET,
+				     PICOPI_SD3_FEATURES);
 }
 
 static void picopi_usdhc_setup(void)
