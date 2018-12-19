@@ -14,6 +14,7 @@
 	.globl	memcpy4
 	.globl	disable_mmu_icache_secure
 	.globl	disable_mmu_secure
+	.arch_extension        sec
 
 func smc
 	/*

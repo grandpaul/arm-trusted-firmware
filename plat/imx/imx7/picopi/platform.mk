@@ -121,7 +121,7 @@ SEPARATE_CODE_AND_RODATA	:= 1
 USE_COHERENT_MEM		:= 1
 
 # PLAT_PICOPI_UART
-PLAT_PICOPI_UART			:=1
+PLAT_PICOPI_UART			:=5
 $(eval $(call add_define,PLAT_PICOPI_UART))
 
 # Add the build options to pack BLx images and kernel device tree
