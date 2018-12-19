@@ -29,11 +29,8 @@
 #include <imx_wdog.h>
 #include "picopi_private.h"
 
-#define UART1_CLK_SELECT (CCM_TARGET_ROOT_ENABLE |\
-			  CCM_TRGT_MUX_UART1_CLK_ROOT_OSC_24M)
-
-#define UART6_CLK_SELECT (CCM_TARGET_ROOT_ENABLE |\
-			  CCM_TRGT_MUX_UART6_CLK_ROOT_OSC_24M)
+#define UART5_CLK_SELECT (CCM_TARGET_ROOT_ENABLE |\
+			  CCM_TRGT_MUX_UART5_CLK_ROOT_OSC_24M)
 
 #define USDHC_CLK_SELECT (CCM_TARGET_ROOT_ENABLE |\
 			  CCM_TRGT_MUX_NAND_USDHC_BUS_CLK_ROOT_AHB |\
@@ -135,67 +132,20 @@ void bl2_el3_plat_arch_setup(void)
 	/* Setup the MMU here */
 }
 
-#define PICOPI_UART1_TX_MUX \
-	IOMUXC_SW_MUX_CTL_PAD_UART1_TX_DATA_ALT0_UART1_TX_DATA
+#define PICOPI_UART5_RX_MUX \
+	IOMUXC_SW_MUX_CTL_PAD_I2C4_SCL_ALT1_UART5_RX_DATA
 
-#define PICOPI_UART1_TX_FEATURES \
-	(IOMUXC_SW_PAD_CTL_PAD_UART1_TX_DATA_PS_3_100K_PU	| \
-	 IOMUXC_SW_PAD_CTL_PAD_UART1_TX_DATA_PE_EN		| \
-	 IOMUXC_SW_PAD_CTL_PAD_UART1_TX_DATA_HYS_EN		| \
-	 IOMUXC_SW_PAD_CTL_PAD_UART1_TX_DATA_DSE_1_X4)
-
-#define PICOPI_UART1_RX_MUX \
-	IOMUXC_SW_MUX_CTL_PAD_UART1_RX_DATA_ALT0_UART1_RX_DATA
-
-#define PICOPI_UART1_RX_FEATURES \
-	(IOMUXC_SW_PAD_CTL_PAD_UART1_RX_DATA_PS_3_100K_PU	| \
-	 IOMUXC_SW_PAD_CTL_PAD_UART1_RX_DATA_PE_EN		| \
-	 IOMUXC_SW_PAD_CTL_PAD_UART1_RX_DATA_HYS_EN		| \
-	 IOMUXC_SW_PAD_CTL_PAD_UART1_RX_DATA_DSE_1_X4)
-
-#define PICOPI_UART6_TX_MUX \
-	IOMUXC_SW_MUX_CTL_PAD_ECSPI1_MOSI_ALT1_UART6_TX_DATA
-
-#define PICOPI_UART6_TX_FEATURES \
-	(IOMUXC_SW_PAD_CTL_PAD_ECSPI1_MOSI_PS_3_100K_PU		| \
-	 IOMUXC_SW_PAD_CTL_PAD_ECSPI1_MOSI_PE_EN		| \
-	 IOMUXC_SW_PAD_CTL_PAD_ECSPI1_MOSI_HYS_EN		| \
-	 IOMUXC_SW_PAD_CTL_PAD_ECSPI1_MOSI_DSE_1_X4)
-
-#define PICOPI_UART6_RX_MUX \
-	IOMUXC_SW_MUX_CTL_PAD_ECSPI1_SCLK_ALT1_UART6_RX_DATA
-
-#define PICOPI_UART6_RX_FEATURES \
-	(IOMUXC_SW_PAD_CTL_PAD_ECSPI1_SCLK_PS_3_100K_PU		| \
-	 IOMUXC_SW_PAD_CTL_PAD_ECSPI1_SCLK_PE_EN		| \
-	 IOMUXC_SW_PAD_CTL_PAD_ECSPI1_SCLK_HYS_EN		| \
-	 IOMUXC_SW_PAD_CTL_PAD_ECSPI1_SCLK_DSE_1_X4)
+#define PICOPI_UART5_TX_MUX \
+	IOMUXC_SW_MUX_CTL_PAD_I2C4_SDA_ALT1_UART5_TX_DATA
 
 static void picopi_setup_pinmux(void)
 {
-	/* Configure UART1 TX */
-	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_UART1_TX_DATA_OFFSET,
-					 PICOPI_UART1_TX_MUX);
-	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_UART1_TX_DATA_OFFSET,
-				     PICOPI_UART1_TX_FEATURES);
-
-	/* Configure UART1 RX */
-	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_UART1_RX_DATA_OFFSET,
-					 PICOPI_UART1_RX_MUX);
-	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_UART1_RX_DATA_OFFSET,
-				     PICOPI_UART1_RX_FEATURES);
-
-	/* Configure UART6 TX */
-	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_ECSPI1_MOSI_OFFSET,
-					 PICOPI_UART6_TX_MUX);
-	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_ECSPI1_MOSI_OFFSET,
-				     PICOPI_UART6_TX_FEATURES);
-
-	/* Configure UART6 RX */
-	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_ECSPI1_SCLK_OFFSET,
-					 PICOPI_UART6_RX_MUX);
-	imx_io_muxc_set_pad_features(IOMUXC_SW_PAD_CTL_PAD_ECSPI1_SCLK_OFFSET,
-				     PICOPI_UART6_RX_FEATURES);
+	/* Configure UART5 TX */
+	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_I2C4_SDA_OFFSET,
+					 PICOPI_UART5_TX_MUX);
+	/* Configure UART5 RX */
+	imx_io_muxc_set_pad_alt_function(IOMUXC_SW_MUX_CTL_PAD_I2C4_SCL_OFFSET,
+					 PICOPI_UART5_RX_MUX);
 }
 
 static void picopi_usdhc_setup(void)
@@ -251,8 +201,7 @@ static void picopi_setup_usb_clocks(void)
 void bl2_el3_early_platform_setup(u_register_t arg1, u_register_t arg2,
 				  u_register_t arg3, u_register_t arg4)
 {
-	uint32_t uart1_en_bits = (uint32_t)UART1_CLK_SELECT;
-	uint32_t uart6_en_bits = (uint32_t)UART6_CLK_SELECT;
+	uint32_t uart5_en_bits = (uint32_t)UART5_CLK_SELECT;
 	uint32_t usdhc_clock_sel = PLAT_PICOPI_SD - 1;
 
 	/* Initialize the AIPS */
@@ -263,8 +212,7 @@ void bl2_el3_early_platform_setup(u_register_t arg1, u_register_t arg2,
 
 	/* Initialize clocks, regulators, pin-muxes etc */
 	imx_clock_init();
-	imx_clock_enable_uart(0, uart1_en_bits);
-	imx_clock_enable_uart(5, uart6_en_bits);
+	imx_clock_enable_uart(4, uart5_en_bits);
 	imx_clock_enable_usdhc(usdhc_clock_sel, USDHC_CLK_SELECT);
 	picopi_setup_system_counter();
 	picopi_setup_wdog_clocks();
