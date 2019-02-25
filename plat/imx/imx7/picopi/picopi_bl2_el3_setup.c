@@ -6,10 +6,10 @@
 
 #include <arch_helpers.h>
 #include <assert.h>
-#include <bl_common.h>
+#include <common/bl_common.h>
 #include <console.h>
-#include <debug.h>
-#include <desc_image_load.h>
+#include <common/debug.h>
+#include <common/desc_image_load.h>
 #include <mmc.h>
 #include <mmio.h>
 #include <optee_utils.h>
@@ -247,6 +247,8 @@ void bl2_el3_early_platform_setup(u_register_t arg1, u_register_t arg2,
 {
 	uint32_t uart5_en_bits = (uint32_t)UART5_CLK_SELECT;
 	uint32_t usdhc_clock_sel = PLAT_PICOPI_SD - 1;
+	static console_imx_uart_t console;
+	int console_scope = CONSOLE_FLAG_BOOT | CONSOLE_FLAG_RUNTIME;
 
 	/* Initialize the AIPS */
 	imx_aips_init();
@@ -266,8 +268,12 @@ void bl2_el3_early_platform_setup(u_register_t arg1, u_register_t arg2,
 	picopi_setup_pinmux();
 
 	/* Init UART, storage and friends */
-	console_init(PLAT_PICOPI_BOOT_UART_BASE, PLAT_PICOPI_BOOT_UART_CLK_IN_HZ,
-		     PLAT_PICOPI_CONSOLE_BAUDRATE);
+	console_imx_uart_register(PLAT_PICOPI_BOOT_UART_BASE,
+				  PLAT_PICOPI_BOOT_UART_CLK_IN_HZ,
+				  PLAT_PICOPI_CONSOLE_BAUDRATE,
+				  &console);
+	console_set_scope(&console.console, console_scope);
+
 	picopi_usdhc_setup();
 
 	/* Open handles to persistent storage */
