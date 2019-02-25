@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 #include <assert.h>
-#include <debug.h>
+#include <common/debug.h>
 #include <mmc.h>
 #include <firmware_image_package.h>
 #include <io_block.h>
