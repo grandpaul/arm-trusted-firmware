@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include <debug.h>
-#include <platform.h>
+#include <common/debug.h>
+#include <plat/common/platform.h>
 
 extern char picopi_rotpk_hash[], picopi_rotpk_hash_end[];
 
