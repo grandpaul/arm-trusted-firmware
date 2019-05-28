@@ -6,7 +6,7 @@
 
 #include <common/bl_common.h>
 #include <common/desc_image_load.h>
-#include <platform.h>
+#include <plat/common/platform.h>
 #include <platform_def.h>
 
 static bl_mem_params_node_t bl2_mem_params_descs[] = {

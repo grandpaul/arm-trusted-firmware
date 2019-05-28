@@ -6,7 +6,7 @@
 
 #include <common/bl_common.h>
 #include <common/desc_image_load.h>
-#include <platform.h>
+#include <plat/common/platform.h>
 
 void plat_flush_next_bl_params(void)
 {
