@@ -36,6 +36,7 @@
 
 /* non-secure uboot base */
 #define PLAT_NS_IMAGE_OFFSET		U(0x40200000)
+#define PLAT_NS_IMAGE_SIZE		U(0x00100000)
 
 /* GICv3 base address */
 #define PLAT_GICD_BASE			U(0x38800000)
@@ -129,3 +130,7 @@
 #define CAAM_JR1MID			U(0x30900018)
 #define CAAM_JR2MID			U(0x30900020)
 #define CAAM_NS_MID			U(0x1)
+
+#define MAX_IO_HANDLES			3U
+#define MAX_IO_DEVICES			2U
+#define MAX_IO_BLOCK_DEVICES		1U
