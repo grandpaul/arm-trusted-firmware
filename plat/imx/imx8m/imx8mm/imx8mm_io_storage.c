@@ -47,7 +47,7 @@ static const io_uuid_spec_t bl33_uuid_spec = {
 	.uuid = UUID_NON_TRUSTED_FIRMWARE_BL33,
 };
 
-#if 0 && TRUSTED_BOARD_BOOT
+#if TRUSTED_BOARD_BOOT
 static const io_uuid_spec_t tb_fw_cert_uuid_spec = {
 	.uuid = UUID_TRUSTED_BOOT_FW_CERT,
 };
@@ -56,12 +56,20 @@ static const io_uuid_spec_t trusted_key_cert_uuid_spec = {
 	.uuid = UUID_TRUSTED_KEY_CERT,
 };
 
+static const io_uuid_spec_t soc_fw_key_cert_uuid_spec = {
+	.uuid = UUID_SOC_FW_KEY_CERT,
+};
+
 static const io_uuid_spec_t tos_fw_key_cert_uuid_spec = {
 	.uuid = UUID_TRUSTED_OS_FW_KEY_CERT,
 };
 
 static const io_uuid_spec_t tos_fw_cert_uuid_spec = {
 	.uuid = UUID_TRUSTED_OS_FW_CONTENT_CERT,
+};
+
+static const io_uuid_spec_t soc_fw_content_cert_uuid_spec = {
+	.uuid = UUID_SOC_FW_CONTENT_CERT,
 };
 
 static const io_uuid_spec_t nt_fw_key_cert_uuid_spec = {
@@ -110,10 +118,15 @@ static const struct plat_io_policy policies[] = {
 		(uintptr_t)&bl33_uuid_spec,
 		open_fip
 	},
-#if 0 && TRUSTED_BOARD_BOOT
+#if TRUSTED_BOARD_BOOT
 	[TRUSTED_BOOT_FW_CERT_ID] = {
 		&fip_dev_handle,
 		(uintptr_t)&tb_fw_cert_uuid_spec,
+		open_fip
+	},
+	[SOC_FW_KEY_CERT_ID] = {
+		&fip_dev_handle,
+		(uintptr_t)&soc_fw_key_cert_uuid_spec,
 		open_fip
 	},
 	[TRUSTED_KEY_CERT_ID] = {
@@ -129,6 +142,11 @@ static const struct plat_io_policy policies[] = {
 	[NON_TRUSTED_FW_KEY_CERT_ID] = {
 		&fip_dev_handle,
 		(uintptr_t)&nt_fw_key_cert_uuid_spec,
+		open_fip
+	},
+	[SOC_FW_CONTENT_CERT_ID] = {
+		&fip_dev_handle,
+		(uintptr_t)&soc_fw_content_cert_uuid_spec,
 		open_fip
 	},
 	[TRUSTED_OS_FW_CONTENT_CERT_ID] = {
