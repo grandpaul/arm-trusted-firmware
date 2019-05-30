@@ -5,13 +5,13 @@
  */
 
 #include <assert.h>
-#include <firmware_image_package.h>
+#include <tools_share/firmware_image_package.h>
 #include <platform_def.h>
-#include <io_fip.h>
-#include <io_driver.h>
-#include <io_memmap.h>
+#include <drivers/io/io_fip.h>
+#include <drivers/io/io_driver.h>
+#include <drivers/io/io_memmap.h>
 #include <tbbr_img_def.h>
-#include <utils_def.h>
+#include <lib/utils_def.h>
 
 static const io_dev_connector_t *fip_dev_con;
 static uintptr_t fip_dev_handle;

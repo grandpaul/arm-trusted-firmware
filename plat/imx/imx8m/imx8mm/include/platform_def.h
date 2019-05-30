@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#include <common/tbbr/tbbr_img_def.h>
+
 #define PLATFORM_LINKER_FORMAT		"elf64-littleaarch64"
 #define PLATFORM_LINKER_ARCH		aarch64
 
@@ -29,8 +31,19 @@
 #define PLAT_WAIT_RET_STATE		U(1)
 #define PLAT_STOP_OFF_STATE		U(3)
 
+#if defined(BUILD_BL2)
+#define BL2_BASE			U(0x920000)
+#define BL2_LIMIT			U(0x940000)
+#define BL31_BASE			U(0x900000)
+#define BL31_LIMIT			U(0x920000)
+#define FIP_BASE			U(0x40310000)
+#define FIP_SIZE			U(0x000100000)
+#define FIP_LIMIT			U(FIP_BASE + FIP_SIZE)
+#else
 #define BL31_BASE			U(0x920000)
 #define BL31_LIMIT			U(0x940000)
+#endif
+
 #define BL32_BASE			U(0xbe000000)
 #define BL32_LIMIT			U(0xc0000000)
 
