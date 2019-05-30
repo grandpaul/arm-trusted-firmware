@@ -106,6 +106,20 @@ void bl31_early_platform_setup2(u_register_t arg0, u_register_t arg1,
 	bl33_image_ep_info.spsr = get_spsr_for_bl33_entry();
 	SET_SECURITY_STATE(bl33_image_ep_info.h.attr, NON_SECURE);
 
+#ifdef TEE_IMX8
+	/* Populate entry point information for BL32 */
+	SET_PARAM_HEAD(&bl32_image_ep_info, PARAM_EP, VERSION_1, 0);
+	SET_SECURITY_STATE(bl32_image_ep_info.h.attr, SECURE);
+	bl32_image_ep_info.pc = BL32_BASE;
+	bl32_image_ep_info.spsr = 0;
+
+	/* Pass TEE base and size to uboot */
+	bl33_image_ep_info.args.arg1 = BL32_BASE;
+
+	/* TEE size + RDC reserved memory = 0x2000000 + 0x2000000 + 0x30000000 */
+	bl33_image_ep_info.args.arg2 = BL32_LIMIT - BL32_BASE;
+#endif
+
 	bl31_tzc380_setup();
 }
 

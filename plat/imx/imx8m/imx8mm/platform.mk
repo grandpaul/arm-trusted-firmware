@@ -36,6 +36,10 @@ BL31_SOURCES		+=	plat/imx/common/imx8_helpers.S			\
 				drivers/delay_timer/generic_delay_timer.c	\
 				${IMX_GIC_SOURCES}
 
+ifneq (${SPD},none)
+$(eval $(call add_define,TEE_IMX8))
+endif
+
 USE_COHERENT_MEM	:=	1
 RESET_TO_BL31		:=	1
 A53_DISABLE_NON_TEMPORAL_HINT := 0
