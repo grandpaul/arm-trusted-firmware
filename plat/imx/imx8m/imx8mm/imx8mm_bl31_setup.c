@@ -93,6 +93,11 @@ void bl31_early_platform_setup2(u_register_t arg0, u_register_t arg1,
 
 	imx_aipstz_init(aipstz);
 
+	/* config CAAM JRaMID set MID to Cortex A */
+	mmio_write_32(CAAM_JR0MID, CAAM_NS_MID);
+	mmio_write_32(CAAM_JR1MID, CAAM_NS_MID);
+	mmio_write_32(CAAM_JR2MID, CAAM_NS_MID);
+
 	console_imx_uart_register(IMX_BOOT_UART_BASE, IMX_BOOT_UART_CLK_IN_HZ,
 		IMX_CONSOLE_BAUDRATE, &console);
 	/* This console is only used for boot stage */
