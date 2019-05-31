@@ -80,6 +80,47 @@ void bl31_tzc380_setup(void)
 		TZC_ATTR_REGION_EN_MASK | TZC_ATTR_SP_ALL);
 }
 
+#ifdef TEE_IMX8
+static void imx8mm_aips_config(void)
+{
+	/* config the AIPSTZ1 */
+	mmio_write_32(0x301f0000, 0x77777777);
+	mmio_write_32(0x301f0004, 0x77777777);
+	mmio_write_32(0x301f0040, 0x0);
+	mmio_write_32(0x301f0044, 0x0);
+	mmio_write_32(0x301f0048, 0x0);
+	mmio_write_32(0x301f004c, 0x0);
+	mmio_write_32(0x301f0050, 0x0);
+
+	/* config the AIPSTZ2 */
+	mmio_write_32(0x305f0000, 0x77777777);
+	mmio_write_32(0x305f0004, 0x77777777);
+	mmio_write_32(0x305f0040, 0x0);
+	mmio_write_32(0x305f0044, 0x0);
+	mmio_write_32(0x305f0048, 0x0);
+	mmio_write_32(0x305f004c, 0x0);
+	mmio_write_32(0x305f0050, 0x0);
+
+	/* config the AIPSTZ3 */
+	mmio_write_32(0x309f0000, 0x77777777);
+	mmio_write_32(0x309f0004, 0x77777777);
+	mmio_write_32(0x309f0040, 0x0);
+	mmio_write_32(0x309f0044, 0x0);
+	mmio_write_32(0x309f0048, 0x0);
+	mmio_write_32(0x309f004c, 0x0);
+	mmio_write_32(0x309f0050, 0x0);
+
+	/* config the AIPSTZ4 */
+	mmio_write_32(0x32df0000, 0x77777777);
+	mmio_write_32(0x32df0004, 0x77777777);
+	mmio_write_32(0x32df0040, 0x0);
+	mmio_write_32(0x32df0044, 0x0);
+	mmio_write_32(0x32df0048, 0x0);
+	mmio_write_32(0x32df004c, 0x0);
+	mmio_write_32(0x32df0050, 0x0);
+}
+#endif
+
 void bl31_early_platform_setup2(u_register_t arg0, u_register_t arg1,
 		u_register_t arg2, u_register_t arg3)
 {
@@ -92,6 +133,11 @@ void bl31_early_platform_setup2(u_register_t arg0, u_register_t arg1,
 	}
 
 	imx_aipstz_init(aipstz);
+
+#ifdef TEE_IMX8
+	/* Setup AIPSTZ config */
+	imx8mm_aips_config();
+#endif
 
 	/* config CAAM JRaMID set MID to Cortex A */
 	mmio_write_32(CAAM_JR0MID, CAAM_NS_MID);
